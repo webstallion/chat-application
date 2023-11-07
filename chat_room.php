@@ -1,38 +1,4 @@
-<?php
-  session_start();
-  $error='';
-  if(isset($_SESSION['user_data'])){
-    header('location:chatroom.php');
-  }
-  if(isset($_POST['login'])){
-    require_once('database/ChatUser.php');
-    $user_object=new ChatUser;
-    $user_object->setUserEmail($_POST['user_email']);
-    $user_data=$user_object->get_user_data_by_email();
-    if(is_array($user_data) && count($user_data)>0){
-      if($user_data['user_status']=='Enable'){
-        if($user_data['user_password']==$_POST['user_password']){
-          $user_object->setUserID($user_data['user_id']);
-          $user_object->setUserloginStatus('Login');
-          if($user_object->update_user_login_data()){
-            $_SESSION['user_data'][$user_data['user_id']]=[
-                                                            'id'=>$user_data['user_id'],
-                                                            'name'=>$user_data['user_name']
-                                                          ];
-            print_r($_SESSION);die();                                              
-            header('location:chatroom.php');                                              
-          }
-        }else{
-          $error="Wrong Password";
-        }
-      }else{
-        $error='Please Verify Your Email Address';
-      }
-    }else{
-      $error="Pls register account..";
-    }
-  }
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,20 +30,6 @@
       <h1 class="text-center"><a href="https://www.webslesson.info/2021/01/build-real-time-chat-application-in-php-mysql-using-websocket.html">PHP Chat Application using Websocket</a></h1>
       <div class="row justify-content-md-center">
         <div class="col col-md-4 mt-5">
-          <?php
-          if(isset($_SESSION['success_message'])){
-            echo '<div class="alert alert-success">'.
-                    $_SESSION['success_message']
-                  .'</div>';
-                  unset($_SESSION['success_message']);
-          }
-
-          if($error !=''){
-            echo '<div class="alert alert-danger">'.
-                    $error
-                  .'</div>';
-          }
-          ?>
           <div class="card">
             <div class="card-header">Login</div>
             <div class="card-body">
@@ -91,7 +43,7 @@
                     <input type="password" name="user_password" id="user_password" class="form-control" data-parsley-minlength="6" data-parsley-maxlength="12" required />
                   </div>
                   <div class="form-group text-center">
-                      <input type="submit" name="login" class="btn btn-success" value="Login" />
+                      <input type="submit" name="Login" class="btn btn-success" value="Login" />
                   </div>
               </form>
             </div>
