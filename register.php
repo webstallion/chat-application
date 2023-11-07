@@ -128,13 +128,9 @@
 
         </script>
 </body>
-
 </html>
-
 <script>
-
 $(document).ready(function(){
   $('#register_form').parsley();
 });
-
 </script>
